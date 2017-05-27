@@ -98,18 +98,45 @@ public class Balan implements Balaninterface {
 
     @Override
     public long permutation(int a, int b) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (a < b) {
+			return -1;
+		}
+		if (a >= 0 && b >= 0) {
+			long result = 1;
+			int c = a - b;
+			for (int i = c + 1; i <= a; i++) {
+				result *= i;
+			}
+			return result;
+		}
+		return -1;
     }
 
     @Override
     public long combination(int a, int b) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+if (a < b) {
+			return -1;
+		}
+		if (a >= 0 && b >= 0) {
+			long result = 1;
+			int c = a - b;
+			if (c > b) {
+				int temp = c;
+				c = b;
+				b = temp;
+			}
+			for (int i = b + 1; i <= a; i++) {
+				result *= i;
+			}
+			result /= factorial(c);
+			return result;
+		}
+		return -1;    }
 
     @Override
     public double convertToDeg(double num) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+num = num * 180 / Math.PI;
+		return num;    }
 
     @Override
     public double convertToRad(double num) {
