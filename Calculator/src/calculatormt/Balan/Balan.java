@@ -9,61 +9,91 @@ package calculatormt.Balan;
  *
  * @author HM
  */
-public class Balan implements Balaninterface{
+public class Balan implements Balaninterface {
+
+    private boolean isError = false;
+    private String varString[] = {"ans", "va", "vb", "vc", "vd", "ve", "vf"};
+    private String constString[] = {"pi", "π", "e"}; // mang chuoi cac hang
+    public double var[] = new double[varString.length];
+    private double cons[] = {Math.PI, Math.PI, Math.E};
+    private boolean isDegOrRad = true;
+    private int radix = 10, sizeRound = 10;
+    private ConvertNumber convertNumber = new ConvertNumber();
 
     @Override
     public boolean isError() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return isError;
     }
 
     @Override
     public void setError(boolean isError) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.isError = isError;
     }
 
     @Override
     public int getSizeRound() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return sizeRound;
     }
 
     @Override
     public void setSizeRound(int sizeRound) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.sizeRound = sizeRound;
     }
 
     @Override
     public int getRadix() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return radix;
     }
 
     @Override
     public void setRadix(int radix) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.radix = radix;
     }
 
     @Override
     public boolean isDegOrRad() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return isDegOrRad;
     }
 
     @Override
     public void setDegOrRad(boolean isDegOrRad) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.isDegOrRad = isDegOrRad;
     }
 
     @Override
     public boolean isIntegerNumber(double num) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        long a = (long) num;
+        if (a == num) {
+            return true;
+        }
+        return false;
     }
 
     @Override
     public String myRound(double num, int size) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (isIntegerNumber(num)) {
+            return Long.toString((long) num);
+        } else {
+            int n = size - Long.toString((long) num).length();
+            num = Math.round(num * Math.pow(10, n)) / Math.pow(10, n);
+            if (isIntegerNumber(num)) {
+                return Long.toString((long) num);
+            } else {
+                return Double.toString(num);
+            }
+        }
     }
 
     @Override
     public long factorial(int num) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (num >= 0) {
+            long result = 1;
+            for (int i = 1; i <= num; i++) {
+                result *= i;
+            }
+            return result;
+        }
+        return -1;
     }
 
     @Override
@@ -185,5 +215,5 @@ public class Balan implements Balaninterface{
     public String primeMulti(double num) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }

@@ -11,14 +11,8 @@ package calculatormt.Balan;
  */
 
 public interface Balaninterface {
-        public boolean isError = false;
-	public String varString[] = { "ans", "va", "vb", "vc", "vd", "ve", "vf" };
-	public String constString[] = { "pi", "π", "e" }; // mang chuoi cac hang
-	public double var[] = new double[varString.length];
-	public double cons[] = { Math.PI, Math.PI, Math.E };
-	public boolean isDegOrRad = true;
-	public int radix = 10, sizeRound = 10;
-	public ConvertNumber convertNumber = new ConvertNumber();
+
+	
     	public boolean isError();
 	public void setError(boolean isError);
 	public int getSizeRound();
@@ -29,8 +23,6 @@ public interface Balaninterface {
 	public void setDegOrRad(boolean isDegOrRad) ;
 	public boolean isIntegerNumber(double num) ;
 	public String myRound(double num, int size) ;
-	
-
 	// num!
 	public long factorial(int num) ;
 	
@@ -107,4 +99,4 @@ public interface Balaninterface {
 	public Double valueMath(String math) ;
 	public String primeMulti(double num) ;
 
-                }
+  }
