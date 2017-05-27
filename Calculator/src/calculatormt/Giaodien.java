@@ -13,6 +13,7 @@ import Info.Info;
 import calculatormt.Balan.Balan;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import static java.awt.Component.RIGHT_ALIGNMENT;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -33,7 +34,9 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-public class Giaodien  extends JFrame implements ActionListener, KeyListener {
+
+
+public class Giaodien extends JFrame implements ActionListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -64,7 +67,7 @@ public class Giaodien  extends JFrame implements ActionListener, KeyListener {
 			colorEnnabaleStar = Color.black;
 
 	private boolean isSTO = false;
-	private Balan balan;	
+	private Balan balan;
 	private Info help, about;
 
 	public Giaodien() {
@@ -76,7 +79,307 @@ public class Giaodien  extends JFrame implements ActionListener, KeyListener {
 		resetValue(); // dat lai cac gia tri
 		changeMode(); // che do hien thi
 	}
-        // dat lai gia tri cho balan
+
+	private void changeMode() {
+		if (mode == 0) {
+			frameWidth = 300;
+			frameHeight = 380;
+			frame.setTitle("Calculator - Basic");
+		}
+		if (mode == 1) {
+			frameWidth = 460;
+			frameHeight = 440;
+			frame.setTitle("Calculator - Advanced");
+		}
+		if (mode == 2) {
+			frameWidth = 460;
+			frameHeight = 440;
+			frame.setTitle("Calculator - Program");
+		}
+		createListLabelButton(mode);
+		balan.setDegOrRad(true);
+		balan.setRadix(10);
+
+		frame.getContentPane().removeAll();
+		frame.setSize(frameWidth, frameHeight);
+		mainPanel = createMainPanel();
+		frame.add(mainPanel);
+
+		frame.getContentPane().validate();
+		frame.setVisible(true);
+		tfDisplay.requestFocus();
+	}
+
+	private JPanel createMainPanel() {
+		JPanel mainPanel = new JPanel(new BorderLayout());
+		disPlayPanel = createDisplayPanel();
+		mainPanel.add(disPlayPanel, BorderLayout.NORTH);
+
+		if (mode == 0) {
+			buttonPanel = createButtonBasicPanel();
+		}
+		if (mode == 1) {
+			buttonPanel = createButtonAdvancedPanel();
+		}
+		if (mode == 2) {
+			buttonPanel = createButtonProgramPanel();
+		}
+		mainPanel.add(buttonPanel, BorderLayout.CENTER);
+		mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		// mainPanel
+
+		mainPanel.setVisible(true);
+		return mainPanel;
+	}
+
+	// ----------------------- main panel content ----------------------- //
+	private JMenuBar createMenuBar() {
+		JMenuBar mb = new JMenuBar();
+
+		// menu mode
+		JMenu mm = createMenu("Mode", KeyEvent.VK_M);
+
+		mm.add(createMenuItem("Basic", KeyEvent.VK_B));
+		mm.add(createMenuItem("Advanced", KeyEvent.VK_A));
+		mm.add(createMenuItem("Program", KeyEvent.VK_P));
+		mm.addSeparator();
+		mm.add(createMenuItem("Exit", KeyEvent.VK_X));
+		mb.add(mm);
+
+		// menu help
+		JMenu mh = createMenu("Help", 0);
+
+		mh.add(createMenuItem("Help", KeyEvent.VK_H));
+		mh.add(createMenuItem("About", KeyEvent.VK_H));
+		mb.add(mh);
+
+		return mb;
+	}
+
+	// create Display Panel
+	private JPanel createDisplayPanel() {
+
+		JPanel panel = new JPanel(new BorderLayout());
+
+		if (mode == 1) {
+			lbStats = new JLabel("sto");
+			Font fontStats = lbStats.getFont().deriveFont(Font.PLAIN, 12f);
+			lbStats.setFont(fontStats);
+			lbStats.setForeground(colorDisableStats);
+			lbStats.setBackground(Color.white);
+			lbStats.setOpaque(true);
+			panel.add(lbStats, BorderLayout.NORTH);
+		}
+
+		tfDisplay = new JTextField(frameWidth);
+		Font fontDisplay = tfDisplay.getFont().deriveFont(Font.PLAIN, 25f);
+		tfDisplay.setFont(fontDisplay);
+		tfDisplay.setHorizontalAlignment(JTextField.RIGHT);
+		tfDisplay.setBorder(null);
+		tfDisplay.addKeyListener(this);// bac su kien khi an phim
+		panel.add(tfDisplay, BorderLayout.CENTER);
+
+		lbAns = new JLabel("0");
+		Font fontAns = lbAns.getFont().deriveFont(Font.PLAIN, 35f);
+		lbAns.setFont(fontAns);
+		lbAns.setHorizontalAlignment(JLabel.RIGHT);
+		lbAns.setBackground(Color.white);
+		lbAns.setOpaque(true);
+
+		panel.add(lbAns, BorderLayout.SOUTH);
+		panel.setBorder(new EmptyBorder(0, 0, 10, 0));
+
+		return panel;
+	}
+
+	// create button Basic Panel
+	private JPanel createButtonBasicPanel() {
+		JPanel buttonBasicPanel = new JPanel(new GridLayout(5, 5, 3, 3));
+
+		btnArr = addListButtonToPanel(lbButton, buttonBasicPanel);
+
+		return buttonBasicPanel;
+	}
+
+	// create button Advanced panel
+	private JPanel createButtonAdvancedPanel() {
+
+		// panel top
+		JPanel panelLeft = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		ButtonGroup btnGroup = new ButtonGroup();
+		radDeg = createRadio("Deg", true, panelLeft);
+		btnGroup.add(radDeg);
+		radRad = createRadio("Rad", false, panelLeft);
+		btnGroup.add(radRad);
+
+		JPanel panelRight = new JPanel(new GridLayout(1, 7, 3, 3));
+		panelRight.setBorder(new EmptyBorder(0, 15, 10, 0));
+
+		String lb[] = { "STO", "vA", "vB", "vC", "vD", "vE", "vF" };
+		varElement = lb;
+		btnArrSub = addListButtonToPanel(lb, panelRight);
+
+		JPanel panel1 = new JPanel(new BorderLayout());
+		panel1.add(panelLeft, BorderLayout.WEST);
+		panel1.add(panelRight, BorderLayout.CENTER);
+
+		// panel bottom
+		JPanel panel2 = new JPanel(new GridLayout(5, 8, 3, 3));
+
+		btnArr = addListButtonToPanel(lbButton, panel2);
+
+		JPanel buttonAdvancedPanel = new JPanel(new BorderLayout());
+		buttonAdvancedPanel.add(panel1, BorderLayout.NORTH);
+		buttonAdvancedPanel.add(panel2, BorderLayout.CENTER);
+		return buttonAdvancedPanel;
+	}
+
+	// create panel program
+	private JPanel createButtonProgramPanel() {
+
+		// panel top
+		JPanel panelLeft = new JPanel(new GridLayout(2, 2));
+		// panelLeft.setPreferredSize(new Dimension(100, 50));
+		ButtonGroup btnGroup = new ButtonGroup();
+		radBin = createRadio("Bin", false, panelLeft);
+		btnGroup.add(radBin);
+		radOct = createRadio("Oct", false, panelLeft);
+		btnGroup.add(radOct);
+		radDec = createRadio("Dec", true, panelLeft);
+		btnGroup.add(radDec);
+		radHex = createRadio("Hex", false, panelLeft);
+		btnGroup.add(radHex);
+
+		JPanel panelRight = new JPanel(new BorderLayout());
+		lbDOH = new JLabel("0₁₀ = 0₁₆ = 0₈");
+		lbDOH.setHorizontalAlignment(JLabel.RIGHT);
+		Font font = lbDOH.getFont().deriveFont(Font.PLAIN, 13f);
+		lbDOH.setFont(font);
+		panelRight.add(lbDOH, BorderLayout.PAGE_START);
+
+		// panel binary
+		String bin1 = "0000  0000  0000  0000  0000  0000  0000  0000₂";
+		lbB = new JLabel(bin1);
+		lbB.setHorizontalAlignment(JLabel.RIGHT);
+		lbB.setFont(font);
+		panelRight.add(lbB, BorderLayout.PAGE_END);
+		panelRight.setBorder(new EmptyBorder(5, 5, 5, 5));
+		panelRight.setAlignmentX(RIGHT_ALIGNMENT);
+
+		JPanel panel1 = new JPanel(new BorderLayout());
+		panel1.add(panelLeft, BorderLayout.WEST);
+		panel1.add(panelRight, BorderLayout.CENTER);
+
+		// panel bottom
+		JPanel panel2 = new JPanel(new GridLayout(5, 8, 3, 3));
+
+		btnArr = addListButtonToPanel(lbButton, panel2);
+
+		JPanel buttonProgramPanel = new JPanel(new BorderLayout());
+		buttonProgramPanel.add(panel1, BorderLayout.NORTH);
+		buttonProgramPanel.add(panel2, BorderLayout.CENTER);
+		return buttonProgramPanel;
+	}
+
+	// ----------------------- item of menu ----------------------- //
+	// create menu
+	private JMenu createMenu(String title, int key) {
+		JMenu menu = new JMenu(title);
+		menu.setMnemonic(key);
+		return menu;
+	}
+
+	// create menu item
+	private JMenuItem createMenuItem(String title, int key) {
+		JMenuItem mi = new JMenuItem(title, key);
+		mi.addActionListener(this);
+		return mi;
+	}
+
+	// ----------------------- item of display ----------------------- //
+	// -------------- item of buttonBasicPanel -------------- //
+	// create button
+	private JButton createButton(String title) {
+		JButton btn = new JButton(title);
+		btn.addActionListener(this);
+		btn.setMargin(new Insets(0, 0, 0, 0));
+		return btn;
+	}
+
+	// create button and add to panel
+	private JButton createButton(String title, JPanel panel) {
+		JButton btn = createButton(title);
+		panel.add(btn);
+		return btn;
+	}
+
+	// create Radio button
+	private JRadioButton createRadio(String title, boolean isSelect,
+			JPanel panel) {
+		JRadioButton rad = new JRadioButton(title);
+		rad.addActionListener(this);
+		rad.setSelected(isSelect);
+		panel.add(rad);
+		return rad;
+	}
+
+	// create List label Button
+	private void createListLabelButton(int mode) {
+		if (mode == 0) {
+			String s[] = { "C", "CE", "←", "(", ")", "7", "8", "9", "/", "√",
+					"4", "5", "6", "*", "x²", "1", "2", "3", "–", "*10ⁿ", "0",
+					"•", "Ans", "+", "=" };
+			lbButton = s;
+
+			String s1[] = { "", "", "", "(", ")", "7", "8", "9", "/", "√", "4",
+					"5", "6", "*", "²", "1", "2", "3", "-", "*10^", "0", ".",
+					"Ans", "+", "" };
+			mathElement = s1;
+
+			return;
+		}
+		if (mode == 1) {
+			String s[] = { "C", "CE", "←", "(", ")", "!", "a*b", "log", "7",
+					"8", "9", "/", "√", "ⁿ√", "nCr", "nPr", "4", "5", "6", "*",
+					"x²", "xⁿ", "sin", "arsin", "1", "2", "3", "–", "*10ⁿ",
+					"π", "cos", "arcos", "0", "•", "Ans", "+", "=", "e", "tan",
+					"artan" };
+			lbButton = s;
+
+			String s1[] = { "", "", "", "(", ")", "!", "", "log ", "7", "8",
+					"9", "/", "√", "ⁿ√", "ℂ", "ℙ", "4", "5", "6", "*", "²",
+					"^", "sin ", "arcsin ", "1", "2", "3", "-", "*10^", "π",
+					"cos ", "arccos ", "0", ".", "Ans", "+", "", "e", "tan ",
+					"arctan " };
+			mathElement = s1;
+			return;
+		}
+		if (mode == 2) {
+			String s[] = { "C", "CE", "←", "(", ")", "!", "a*b", "Mod", "7",
+					"8", "9", "/", "√", "<<", ">>", "And", "4", "5", "6", "*",
+					"x²", "A", "B", "Or", "1", "2", "3", "−", "*10ⁿ", "C", "D",
+					"Xor", "0", "•", "Ans", "+", "=", "E", "F", "Not" };
+			lbButton = s;
+
+			String s1[] = { "", "", "", "(", ")", "!", "", "Mod", "7", "8",
+					"9", "/", "√", "≪", "≫", "∧", "4", "5", "6", "*", "²", "A",
+					"B", "∨", "1", "2", "3", "-", "*10^", "C", "D", "⊻", "0",
+					".", "Ans", "+", "", "E", "F", "¬" };
+			mathElement = s1;
+			return;
+		}
+	}
+
+	private JButton[] addListButtonToPanel(String lbArr[], JPanel panel) {
+		JButton arr[] = new JButton[lbArr.length];
+		for (int i = 0; i < lbArr.length; i++) {
+			arr[i] = createButton(lbArr[i], panel);
+		}
+		return arr;
+	}
+
+	// ----------------------- Action ----------------------- //
+	// dat lai gia tri cho balan
 	private void resetValue() {
 		balan = new Balan();
 		balan.setError(false);
@@ -88,7 +391,7 @@ public class Giaodien  extends JFrame implements ActionListener, KeyListener {
 		}
 	}
 
-    // cho phep chen ky tu vao vi tri con tro
+	// cho phep chen ky tu vao vi tri con tro
 	private void insertMathString(String str) {
 		int index = tfDisplay.getCaretPosition();
 		StringBuilder s = new StringBuilder(tfDisplay.getText() + ""); // copy
@@ -240,7 +543,7 @@ public class Giaodien  extends JFrame implements ActionListener, KeyListener {
 
 		if (command == "Help") {
 			if (help == null) {
-				help = new HelpAndAbout(0, "Calculator - Help");
+				help = new Info(0, "Calculator - Help");
 			}
 			help.setVisible(true);
 		}
@@ -350,4 +653,4 @@ public class Giaodien  extends JFrame implements ActionListener, KeyListener {
 	}
 }
 
-}
+
