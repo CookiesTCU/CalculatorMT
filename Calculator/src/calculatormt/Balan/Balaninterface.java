@@ -99,4 +99,4 @@ public interface Balaninterface {
 	public Double valueMath(String math) ;
 	public String primeMulti(double num) ;
 
-                }
+  }
