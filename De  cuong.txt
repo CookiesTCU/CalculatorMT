@@ -1,0 +1,10 @@
+﻿ĐỀ CƯƠNG ĐỀ TÀI PHẦN MỀM MÃ NGUỒN Mở 4305
+Tên đề tài :Xây dựng phần mềm tính toán(Caculator) 
+
+I.Phần mở đầu
+1.Mục đích:Nghiên cứu sử dụng Github,nghiên cứu phát triển phần mềm mã nguồn mở trên Github
+2.Lý do chọn đề tài:Đây là phần mềm đơn giản,dễ sử dụng,có thể phát triển ,nâng cấp nhanh
+3.Mục tiêu xây dựng quy trình tính toán
+4.Phạm vi nghiên cứu:
+Xây dựng chương trình tính toán ngoài chức năng tính toán cơ bản,còn có thể đổi các đơn vị đo lường mang đến sự tiện ích
+
