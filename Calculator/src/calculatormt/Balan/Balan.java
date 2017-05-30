@@ -114,12 +114,10 @@ public class Balan implements Balaninterface {
             return result;
         }
         return -1;
-
     }
 
     @Override
     public long combination(int a, int b) {
-
         if (a < b) {
             return -1;
         }
@@ -154,7 +152,6 @@ public class Balan implements Balaninterface {
 
     @Override
     public boolean isNumber(String s) {
-
         if (radix != 10 && convertNumber.isRadixString(s, radix)) {
             return true;
         }
@@ -167,12 +164,10 @@ public class Balan implements Balaninterface {
             return false;
         }
         return true;
-
     }
 
     @Override
     public boolean isNumber(char c) {
-
         String numberChar = ".0123456789abcdef";
         int index = numberChar.indexOf(c);
         if (radix == 10 && index >= 0 && index <= 10) {
@@ -193,12 +188,10 @@ public class Balan implements Balaninterface {
         }
         System.out.println(c + " isn't number");
         return false;
-
     }
 
     @Override
     public double stringToNumber(String s) {
-
         int index = indexVar(s);
         if (index >= 0) {
             return var[index];
@@ -227,22 +220,18 @@ public class Balan implements Balaninterface {
             System.out.println("Error parse number");
         }
         return -1;
-
     }
 
     @Override
     public String numberToString(double num, int radix, int size) {
-
         if (radix != 10) {
             return convertNumber.doubleToStringRadix(num, radix, size);
         }
         return myRound(num, size);
-
     }
 
     @Override
     public int indexVar(String s) {
-
 for (int i = 0; i < varString.length; i++) {
 			if (s.equals(varString[i])) {
 				return i;
@@ -280,11 +269,54 @@ String operator[] = { "+", "-", "*", "/", "ℂ", "ℙ", "ncr", "npr", "^",
 			return false;
 		}    }
 
-
     @Override
     public int priority(String s) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+        int p = 1;
+		if (s.equals("→") || s.equals("sto")) {
+			return p;
+		}
+		p++;
+		if (s.equals("+") || s.equals("-")) {
+			return p;
+		}
+		p++;
+		if (s.equals("*") || s.equals("/")) {
+			return p;
+		}
+		p++;
+		if (s.equals("and") || s.equals("∧") || s.equals("or") || s.equals("∨")
+				|| s.equals("xor") || s.equals("⊻") || s.equals("mod")
+				|| s.equals(">>") || s.equals("<<") || s.equals("≫")
+				|| s.equals("≪")) {
+			return p;
+		}
+		p++;
+		if (s.equals("ℂ") || s.equals("ℙ") || s.equals("ncr")
+				|| s.equals("npr")) {
+			return p;
+		}
+		p++;
+		if (s.equals("not") || s.equals("¬")) {
+			return p;
+		}
+		p++;
+		if (s.equals("~")) {
+			return p;
+		}
+		p++;
+		if (s.equals("sin") || s.equals("cos") || s.equals("tan")
+				|| s.equals("arcsin") || s.equals("arccos")
+				|| s.equals("arctan") || s.equals("log")) {
+			return p;
+		}
+		p++;
+		if (s.equals("√") || s.equals("n√") || s.equals("ⁿ√") || s.equals("!")
+				|| s.equals("^") || s.equals("²") || s.equals("sqrt")) {
+			return p;
+		}
+		p++;
+		return 0;
+	}
 
     @Override
     public boolean isOneMath(String c) {
