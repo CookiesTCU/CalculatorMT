@@ -5,6 +5,8 @@
  */
 package calculatormt.Balan;
 
+import java.util.Arrays;
+
 /**
  *
  * @author HM
@@ -98,68 +100,221 @@ public class Balan implements Balaninterface {
 
     @Override
     public long permutation(int a, int b) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (a < b) {
+            return -1;
+        }
+        if (a >= 0 && b >= 0) {
+            long result = 1;
+            int c = a - b;
+            for (int i = c + 1; i <= a; i++) {
+                result *= i;
+            }
+            return result;
+        }
+        return -1;
     }
 
     @Override
     public long combination(int a, int b) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (a < b) {
+            return -1;
+        }
+        if (a >= 0 && b >= 0) {
+            long result = 1;
+            int c = a - b;
+            if (c > b) {
+                int temp = c;
+                c = b;
+                b = temp;
+            }
+            for (int i = b + 1; i <= a; i++) {
+                result *= i;
+            }
+            result /= factorial(c);
+            return result;
+        }
+        return -1;
     }
 
     @Override
     public double convertToDeg(double num) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        num = num * 180 / Math.PI;
+        return num;
     }
 
     @Override
     public double convertToRad(double num) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        num = num * Math.PI / 180;
+        return num;
     }
 
     @Override
     public boolean isNumber(String s) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (radix != 10 && convertNumber.isRadixString(s, radix)) {
+            return true;
+        }
+        if (isVarOrConst(s)) {
+            return true;
+        }
+        try {
+            Double.parseDouble(s);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public boolean isNumber(char c) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String numberChar = ".0123456789abcdef";
+        int index = numberChar.indexOf(c);
+        if (radix == 10 && index >= 0 && index <= 10) {
+            System.out.println(c + " is number");
+            return true;
+        }
+        if (radix == 16 && index >= 0) {
+            System.out.println(c + " is number");
+            return true;
+        }
+        if (radix == 8 && index >= 0 && index <= 8) {
+            System.out.println(c + " is number");
+            return true;
+        }
+        if (radix == 2 && index >= 0 && index <= 2) {
+            System.out.println(c + " is number");
+            return true;
+        }
+        System.out.println(c + " isn't number");
+        return false;
     }
 
     @Override
     public double stringToNumber(String s) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int index = indexVar(s);
+        if (index >= 0) {
+            return var[index];
+        }
+        index = indexConst(s);
+        if (radix != 10) {
+            if (convertNumber.isRadixString(s, radix)) {
+                return convertNumber.stringRadixToDouble(s, radix);
+            } else {
+                isError = true;
+                System.out.println("Error number in radix = " + radix);
+            }
+        }
+        if (index >= 0) {
+            return cons[index];
+        }
+        if (s.charAt(s.length() - 1) == '.') {
+            isError = true;
+            System.out.println("Error number have '.'");
+            return -1;
+        }
+        try {
+            return Double.parseDouble(s);
+        } catch (Exception e) {
+            isError = true;
+            System.out.println("Error parse number");
+        }
+        return -1;
     }
 
     @Override
     public String numberToString(double num, int radix, int size) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (radix != 10) {
+            return convertNumber.doubleToStringRadix(num, radix, size);
+        }
+        return myRound(num, size);
     }
 
     @Override
     public int indexVar(String s) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+for (int i = 0; i < varString.length; i++) {
+			if (s.equals(varString[i])) {
+				return i;
+			}
+		}
+		return -1;    }
 
     @Override
     public int indexConst(String s) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+for (int i = 0; i < constString.length; i++) {
+			if (s.equals(constString[i])) {
+				return i;
+			}
+		}
+		return -1;    }
 
     @Override
     public boolean isVarOrConst(String s) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+if (indexConst(s) >= 0 || indexVar(s) >= 0) {
+			return true;
+		}
+		return false;    }
 
     @Override
     public boolean isOperator(String s) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+String operator[] = { "+", "-", "*", "/", "ℂ", "ℙ", "ncr", "npr", "^",
+				"~", "√", "sqrt", "ⁿ√", "n√", "!", "%", ")", "(", "²", "sin",
+				"cos", "tan", "arcsin", "arccos", "arctan", "log", "→", "sto",
+				"mod", "and", "or", "xor", "not", "∧", "∨", "⊻", "¬", "<<",
+				">>", "≫", "≪" };
+		Arrays.sort(operator);
+		if (Arrays.binarySearch(operator, s) > -1) {
+			return true;
+		} else {
+			return false;
+		}    }
 
     @Override
     public int priority(String s) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+        int p = 1;
+		if (s.equals("→") || s.equals("sto")) {
+			return p;
+		}
+		p++;
+		if (s.equals("+") || s.equals("-")) {
+			return p;
+		}
+		p++;
+		if (s.equals("*") || s.equals("/")) {
+			return p;
+		}
+		p++;
+		if (s.equals("and") || s.equals("∧") || s.equals("or") || s.equals("∨")
+				|| s.equals("xor") || s.equals("⊻") || s.equals("mod")
+				|| s.equals(">>") || s.equals("<<") || s.equals("≫")
+				|| s.equals("≪")) {
+			return p;
+		}
+		p++;
+		if (s.equals("ℂ") || s.equals("ℙ") || s.equals("ncr")
+				|| s.equals("npr")) {
+			return p;
+		}
+		p++;
+		if (s.equals("not") || s.equals("¬")) {
+			return p;
+		}
+		p++;
+		if (s.equals("~")) {
+			return p;
+		}
+		p++;
+		if (s.equals("sin") || s.equals("cos") || s.equals("tan")
+				|| s.equals("arcsin") || s.equals("arccos")
+				|| s.equals("arctan") || s.equals("log")) {
+			return p;
+		}
+		p++;
+		if (s.equals("√") || s.equals("n√") || s.equals("ⁿ√") || s.equals("!")
+				|| s.equals("^") || s.equals("²") || s.equals("sqrt")) {
+			return p;
+		}
+		p++;
+		return 0;
+	}
 
     @Override
     public boolean isOneMath(String c) {
