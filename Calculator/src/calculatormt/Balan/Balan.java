@@ -5,6 +5,7 @@
  */
 package calculatormt.Balan;
 
+
 import java.util.Arrays;
 
 /**
@@ -101,6 +102,7 @@ public class Balan implements Balaninterface {
     @Override
     public long permutation(int a, int b) {
         if (a < b) {
+
             return -1;
         }
         if (a >= 0 && b >= 0) {
@@ -230,6 +232,7 @@ public class Balan implements Balaninterface {
 
     @Override
     public int indexVar(String s) {
+
         for (int i = 0; i < varString.length; i++) {
             if (s.equals(varString[i])) {
                 return i;
@@ -271,9 +274,11 @@ public class Balan implements Balaninterface {
         }
     }
 
+
     @Override
     public int priority(String s) {
         int p = 1;
+
         if (s.equals("→") || s.equals("sto")) {
             return p;
         }
@@ -319,6 +324,7 @@ public class Balan implements Balaninterface {
         p++;
         return 0;
     }
+
 
     @Override
     public boolean isOneMath(String c) {
