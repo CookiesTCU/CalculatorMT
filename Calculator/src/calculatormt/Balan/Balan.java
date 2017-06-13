@@ -5,7 +5,6 @@
  */
 package calculatormt.Balan;
 
-
 import java.util.Arrays;
 
 /**
@@ -102,7 +101,6 @@ public class Balan implements Balaninterface {
     @Override
     public long permutation(int a, int b) {
         if (a < b) {
-
             return -1;
         }
         if (a >= 0 && b >= 0) {
@@ -114,12 +112,10 @@ public class Balan implements Balaninterface {
             return result;
         }
         return -1;
-
     }
 
     @Override
     public long combination(int a, int b) {
-
         if (a < b) {
             return -1;
         }
@@ -154,7 +150,6 @@ public class Balan implements Balaninterface {
 
     @Override
     public boolean isNumber(String s) {
-
         if (radix != 10 && convertNumber.isRadixString(s, radix)) {
             return true;
         }
@@ -167,12 +162,10 @@ public class Balan implements Balaninterface {
             return false;
         }
         return true;
-
     }
 
     @Override
     public boolean isNumber(char c) {
-
         String numberChar = ".0123456789abcdef";
         int index = numberChar.indexOf(c);
         if (radix == 10 && index >= 0 && index <= 10) {
@@ -193,12 +186,10 @@ public class Balan implements Balaninterface {
         }
         System.out.println(c + " isn't number");
         return false;
-
     }
 
     @Override
     public double stringToNumber(String s) {
-
         int index = indexVar(s);
         if (index >= 0) {
             return var[index];
@@ -227,88 +218,177 @@ public class Balan implements Balaninterface {
             System.out.println("Error parse number");
         }
         return -1;
-
     }
 
     @Override
     public String numberToString(double num, int radix, int size) {
-
         if (radix != 10) {
             return convertNumber.doubleToStringRadix(num, radix, size);
         }
         return myRound(num, size);
-
     }
 
     @Override
     public int indexVar(String s) {
-
-for (int i = 0; i < varString.length; i++) {
-			if (s.equals(varString[i])) {
-				return i;
-			}
-		}
-		return -1;    }
+        for (int i = 0; i < varString.length; i++) {
+            if (s.equals(varString[i])) {
+                return i;
+            }
+        }
+        return -1;
+    }
 
     @Override
     public int indexConst(String s) {
-for (int i = 0; i < constString.length; i++) {
-			if (s.equals(constString[i])) {
-				return i;
-			}
-		}
-		return -1;    }
+        for (int i = 0; i < constString.length; i++) {
+            if (s.equals(constString[i])) {
+                return i;
+            }
+        }
+        return -1;
+    }
 
     @Override
     public boolean isVarOrConst(String s) {
-if (indexConst(s) >= 0 || indexVar(s) >= 0) {
-			return true;
-		}
-		return false;    }
+        if (indexConst(s) >= 0 || indexVar(s) >= 0) {
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public boolean isOperator(String s) {
-String operator[] = { "+", "-", "*", "/", "ℂ", "ℙ", "ncr", "npr", "^",
-				"~", "√", "sqrt", "ⁿ√", "n√", "!", "%", ")", "(", "²", "sin",
-				"cos", "tan", "arcsin", "arccos", "arctan", "log", "→", "sto",
-				"mod", "and", "or", "xor", "not", "∧", "∨", "⊻", "¬", "<<",
-				">>", "≫", "≪" };
-		Arrays.sort(operator);
-		if (Arrays.binarySearch(operator, s) > -1) {
-			return true;
-		} else {
-			return false;
-		}    }
-
+        String operator[] = {"+", "-", "*", "/", "ℂ", "ℙ", "ncr", "npr", "^",
+            "~", "√", "sqrt", "ⁿ√", "n√", "!", "%", ")", "(", "²", "sin",
+            "cos", "tan", "arcsin", "arccos", "arctan", "log", "→", "sto",
+            "mod", "and", "or", "xor", "not", "∧", "∨", "⊻", "¬", "<<",
+            ">>", "≫", "≪"};
+        Arrays.sort(operator);
+        if (Arrays.binarySearch(operator, s) > -1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     @Override
     public int priority(String s) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int p = 1;
+        if (s.equals("→") || s.equals("sto")) {
+            return p;
+        }
+        p++;
+        if (s.equals("+") || s.equals("-")) {
+            return p;
+        }
+        p++;
+        if (s.equals("*") || s.equals("/")) {
+            return p;
+        }
+        p++;
+        if (s.equals("and") || s.equals("∧") || s.equals("or") || s.equals("∨")
+                || s.equals("xor") || s.equals("⊻") || s.equals("mod")
+                || s.equals(">>") || s.equals("<<") || s.equals("≫")
+                || s.equals("≪")) {
+            return p;
+        }
+        p++;
+        if (s.equals("ℂ") || s.equals("ℙ") || s.equals("ncr")
+                || s.equals("npr")) {
+            return p;
+        }
+        p++;
+        if (s.equals("not") || s.equals("¬")) {
+            return p;
+        }
+        p++;
+        if (s.equals("~")) {
+            return p;
+        }
+        p++;
+        if (s.equals("sin") || s.equals("cos") || s.equals("tan")
+                || s.equals("arcsin") || s.equals("arccos")
+                || s.equals("arctan") || s.equals("log")) {
+            return p;
+        }
+        p++;
+        if (s.equals("√") || s.equals("n√") || s.equals("ⁿ√") || s.equals("!")
+                || s.equals("^") || s.equals("²") || s.equals("sqrt")) {
+            return p;
+        }
+        p++;
+        return 0;
     }
 
     @Override
     public boolean isOneMath(String c) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String operator[] = {"sin", "cos", "tan", "arcsin", "arccos",
+            "arctan", "√", "sqrt", "(", "~", "not", "¬", "log"};
+        Arrays.sort(operator);
+        if (Arrays.binarySearch(operator, c) > -1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
     public boolean isPostOperator(String s) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String postOperator[] = {"!", "²"};
+        for (int i = 0; i < postOperator.length; i++) {
+            if (s.equals(postOperator[i])) {
+                System.out.println(s + "isPostOperator");
+                return true;
+            }
+        }
+        System.out.println(s + "no isPostOperator");
+        return false;
     }
 
     @Override
     public boolean isWord(char c1, char c2) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        char word[][] = {{'ⁿ', '√'}, {'n', '√'}, {'p', 'i'},
+        {'s', 'i', 'n'}, {'c', 'o', 's'}, {'t', 'a', 'n'},
+        {'a', 'r', 'c', 's', 'i', 'n'},
+        {'a', 'r', 'c', 'c', 'o', 's'},
+        {'a', 'r', 'c', 't', 'a', 'n'}, {'a', 'n', 's'},
+        {'s', 'q', 'r', 't'}, {'n', 'c', 'r'}, {'n', 'p', 'r'},
+        {'s', 't', 'o'}, {'a', 'n', 'd'}, {'o', 'r'},
+        {'x', 'o', 'r'}, {'n', 'o', 't'}, {'m', 'o', 'd'},
+        {'<', '<'}, {'>', '>'}};
+        for (int i = 0; i < word.length; i++) {
+            for (int j = 0; j < word[i].length; j++) {
+                for (int k = j + 1; k < word[i].length; k++) {
+                    if (c1 == word[i][j] && c2 == word[i][k]) {
+                        System.out.println("is word: " + c1 + " " + c2);
+                        return true;
+                    }
+                }
+            }
+        }
+        System.out.println("is'nt word:" + c1 + " " + c2);
+        return false;
     }
 
     @Override
     public boolean isWord(String s) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String word[] = {"ⁿ√", "n√", "pi", "sin", "cos", "tan", "arcsin",
+            "arccos", "arctan", "sqrt", "ncr", "npr", "sto", "and", "or",
+            "xor", "not", "mod", "<<", ">>", "va", "vb", "vc", "vd", "ve",
+            "ans"};
+        for (int i = 0; i < word.length; i++) {
+            if (s.equals(word[i])) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public String standardize(String s) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        s = s.trim();
+        s = s.replaceAll("\\s+", " ");
+        return s;
     }
 
     @Override
