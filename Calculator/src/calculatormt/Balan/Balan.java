@@ -5,7 +5,6 @@
  */
 package calculatormt.Balan;
 
-
 import java.util.Arrays;
 
 /**
@@ -102,7 +101,6 @@ public class Balan implements Balaninterface {
     @Override
     public long permutation(int a, int b) {
         if (a < b) {
-
             return -1;
         }
         if (a >= 0 && b >= 0) {

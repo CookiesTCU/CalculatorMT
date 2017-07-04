@@ -140,8 +140,8 @@ public class Giaodien extends JFrame implements ActionListener, KeyListener {
 		JMenu mm = createMenu("Mode", KeyEvent.VK_M);
 
 		mm.add(createMenuItem("Basic", KeyEvent.VK_B));
-		mm.add(createMenuItem("Advanced", KeyEvent.VK_A));
-		mm.add(createMenuItem("Program", KeyEvent.VK_P));
+		//mm.add(createMenuItem("Advanced", KeyEvent.VK_A));
+		//mm.add(createMenuItem("Program", KeyEvent.VK_P));
 		mm.addSeparator();
 		mm.add(createMenuItem("Exit", KeyEvent.VK_X));
 		mb.add(mm);
@@ -542,17 +542,11 @@ public class Giaodien extends JFrame implements ActionListener, KeyListener {
 		}
 
 		if (command == "Help") {
-			if (help == null) {
-				help = new Info(0, "Calculator - Help");
-			}
-			help.setVisible(true);
+			
 		}
 
 		if (command == "About") {
-			if (about == null) {
-				about = new HelpAndAbout(1, "Calculator - About");
-			}
-			about.setVisible(true);
+			
 		}
 
 		// action on radioButton
