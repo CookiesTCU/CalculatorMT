@@ -9,5 +9,5 @@ CalculatorMT là phần mềm máy tính khoa học nguồn mở phát triển t
 
 * Fan page: [CalculatorMT](https://www.facebook.com/Calculatormt-484613765210615/)
 
-# Tham khảo
+# Tài liệu dự án
 * Xem tài liệu dự án trên [Wiki](https://github.com/CookiesTCU/doc/wiki)
