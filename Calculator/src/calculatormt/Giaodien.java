@@ -141,7 +141,7 @@ public class Giaodien extends JFrame implements ActionListener, KeyListener {
 
 		mm.add(createMenuItem("Basic", KeyEvent.VK_B));
 		mm.add(createMenuItem("Advanced", KeyEvent.VK_A));
-		//mm.add(createMenuItem("Program", KeyEvent.VK_P));
+		mm.add(createMenuItem("Program", KeyEvent.VK_P));
 		mm.addSeparator();
 		mm.add(createMenuItem("Exit", KeyEvent.VK_X));
 		mb.add(mm);
