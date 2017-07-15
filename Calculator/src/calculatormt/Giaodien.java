@@ -79,7 +79,7 @@ public class Giaodien extends JFrame implements ActionListener, KeyListener {
 		resetValue(); // dat lai cac gia tri
 		changeMode(); // che do hien thi
 	}
-
+                    // Thay đổi chế độ tính
 	private void changeMode() {
 		if (mode == 0) {
 			frameWidth = 300;
@@ -109,7 +109,7 @@ public class Giaodien extends JFrame implements ActionListener, KeyListener {
 		frame.setVisible(true);
 		tfDisplay.requestFocus();
 	}
-
+                    // Khỏi tạo giao diện theo mode được chọn
 	private JPanel createMainPanel() {
 		JPanel mainPanel = new JPanel(new BorderLayout());
 		disPlayPanel = createDisplayPanel();
@@ -140,7 +140,7 @@ public class Giaodien extends JFrame implements ActionListener, KeyListener {
 		JMenu mm = createMenu("Mode", KeyEvent.VK_M);
 
 		mm.add(createMenuItem("Basic", KeyEvent.VK_B));
-		//mm.add(createMenuItem("Advanced", KeyEvent.VK_A));
+		mm.add(createMenuItem("Advanced", KeyEvent.VK_A));
 		//mm.add(createMenuItem("Program", KeyEvent.VK_P));
 		mm.addSeparator();
 		mm.add(createMenuItem("Exit", KeyEvent.VK_X));
@@ -156,7 +156,7 @@ public class Giaodien extends JFrame implements ActionListener, KeyListener {
 		return mb;
 	}
 
-	// create Display Panel
+	// tạo Panel hiển thị
 	private JPanel createDisplayPanel() {
 
 		JPanel panel = new JPanel(new BorderLayout());
@@ -192,7 +192,7 @@ public class Giaodien extends JFrame implements ActionListener, KeyListener {
 		return panel;
 	}
 
-	// create button Basic Panel
+	// tạo các nút trong chế độ basic
 	private JPanel createButtonBasicPanel() {
 		JPanel buttonBasicPanel = new JPanel(new GridLayout(5, 5, 3, 3));
 
@@ -201,7 +201,7 @@ public class Giaodien extends JFrame implements ActionListener, KeyListener {
 		return buttonBasicPanel;
 	}
 
-	// create button Advanced panel
+	// tạo các nút trong chế độ nâng cao
 	private JPanel createButtonAdvancedPanel() {
 
 		// panel top
@@ -234,7 +234,7 @@ public class Giaodien extends JFrame implements ActionListener, KeyListener {
 		return buttonAdvancedPanel;
 	}
 
-	// create panel program
+	// create tạo các nút trong chế độ program
 	private JPanel createButtonProgramPanel() {
 
 		// panel top
@@ -369,7 +369,7 @@ public class Giaodien extends JFrame implements ActionListener, KeyListener {
 			return;
 		}
 	}
-
+            // add nút điều khiển vào panel
 	private JButton[] addListButtonToPanel(String lbArr[], JPanel panel) {
 		JButton arr[] = new JButton[lbArr.length];
 		for (int i = 0; i < lbArr.length; i++) {
