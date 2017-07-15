@@ -6,6 +6,7 @@
 package calculatormt.Balan;
 
 import java.util.Arrays;
+import java.util.Stack;
 
 /**
  *
@@ -272,7 +273,6 @@ public class Balan implements Balaninterface {
         }
     }
 
-
     @Override
     public int priority(String s) {
         int p = 1;
@@ -322,7 +322,6 @@ public class Balan implements Balaninterface {
         p++;
         return 0;
     }
-
 
     @Override
     public boolean isOneMath(String c) {
@@ -397,32 +396,312 @@ public class Balan implements Balaninterface {
 
     @Override
     public String[] trimString(String s) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String temp[] = s.split(" ");
+        return temp;
     }
 
     @Override
     public String standardizeMath(String[] s) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String s1 = "";
+        // standardize(s);
+
+        int open = 0, close = 0;
+        for (int i = 0; i < s.length; i++) {
+            if (s[i].equals("(")) {
+                open++;
+            } else if (s[i].equals(")")) {
+                close++;
+            }
+        }
+
+        for (int i = 0; i < s.length; i++) {
+            // chuyen ...)(... thanh ...)*(...
+            if (i > 0 && isOneMath(s[i])
+                    && (s[i - 1].equals(")") || isNumber(s[i - 1]))) {
+                s1 = s1 + "* ";
+            }
+            // 3!2!
+            if (i > 0 && isPostOperator(s[i - 1]) && isNumber(s[i])) {
+                s1 = s1 + "* ";
+            }
+            // so duong
+            if ((i == 0 || (i > 0 && !isNumber(s[i - 1])
+                    && !s[i - 1].equals(")") && !isPostOperator(s[i - 1])))
+                    && (s[i].equals("+"))
+                    && (isNumber(s[i + 1]) || s[i + 1].equals("+"))) {
+                continue;
+            }
+            // check so am
+            if ((i == 0 || (i > 0 && !isNumber(s[i - 1])
+                    && !s[i - 1].equals(")") && !isPostOperator(s[i - 1])))
+                    && (s[i].equals("-"))
+                    && (isNumber(s[i + 1]) || s[i + 1].equals("-"))) {
+                s1 = s1 + "~ ";
+            }// VD hoac 6π , ...)π chuyen sang 6*π , ...)*π
+            else if (i > 0
+                    && ((isNumber(s[i - 1]) || s[i - 1].equals(")")) && isVarOrConst(s[i]))) {
+                s1 = s1 + "* " + s[i] + " ";
+            } else {
+                s1 = s1 + s[i] + " ";
+            }
+        }
+
+        // them cac dau ")" vao cuoi neu thieu
+        for (int i = 0; i < (open - close); i++) {
+            s1 += ") ";
+        }
+        System.out.println("standardizeMath: " + s1);
+        return s1;
     }
 
     @Override
     public String processInput(String sMath) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        sMath = sMath.toLowerCase();
+        sMath = standardize(sMath); // chuan hoa bieu thuc
+        String s = "", temp = "";
+        for (int i = 0; i < sMath.length(); i++) {
+            // is'nt number
+            if (!isNumber(sMath.charAt(i))
+                    || (i < sMath.length() - 1 && isWord(sMath.charAt(i),
+                    sMath.charAt(i + 1)))) {
+                s += " " + temp;
+                temp = "" + sMath.charAt(i);
+                // is operator and isn't word
+                if (isOperator(sMath.charAt(i) + "") && i < sMath.length() - 1
+                        && !isWord(sMath.charAt(i), sMath.charAt(i + 1))) {
+                    s += " " + temp;
+                    temp = "";
+                } else { // isn't operator but is word
+                    i++;
+                    while (i < sMath.length()
+                            && !isNumber(sMath.charAt(i))
+                            && (!isOperator(sMath.charAt(i) + ""))
+                            || (i < sMath.length() - 1 && isWord(
+                            sMath.charAt(i - 1), sMath.charAt(i)))) {
+                        temp += sMath.charAt(i);
+                        i++;
+                        if (isWord(temp)) {
+                            s += " " + temp;
+                            temp = "";
+                            break;
+                        }
+                    }
+                    i--;
+                    s += " " + temp;
+                    temp = "";
+                }
+            } else { // is number
+                temp = temp + sMath.charAt(i);
+            }
+        }
+        s += " " + temp;
+
+        System.out.println("process input 1 : " + s);
+        s = standardize(s);
+        s = standardizeMath(trimString(s));
+        System.out.println(s);
+        return s;
     }
 
     @Override
     public String postFix(String math) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String[] elementMath = trimString(math);
+
+        String s1 = "";
+        Stack<String> S = new Stack<String>();
+        for (int i = 0; i < elementMath.length; i++) { // duyet cac phan tu
+            if (!isOperator(elementMath[i])) // neu khong la toan tu
+            {
+                s1 = s1 + elementMath[i] + " "; // xuat elem vao s1
+            } else { // c la toan tu
+                if (elementMath[i].equals("(")) {
+                    S.push(elementMath[i]); // c la "(" -> day phan tu vao Stack
+                } else {
+                    if (elementMath[i].equals(")")) { // c la ")"
+                        // duyet lai cac phan tu trong Stack
+                        String temp = "";
+                        do {
+                            temp = S.peek();
+                            if (!temp.equals("(")) {
+                                s1 = s1 + S.peek() + " "; // trong khi c1 != "("
+                            }
+                            S.pop();
+                        } while (!temp.equals("("));
+                    } else {
+                        // Stack khong rong va trong khi phan tu trong Stack co
+                        // do uu tien >= phan tu hien tai
+                        while (!S.isEmpty()
+                                && priority(S.peek()) >= priority(elementMath[i])
+                                && !isOneMath(elementMath[i])) {
+                            s1 = s1 + S.pop() + " ";
+                        }
+                        S.push(elementMath[i]); // dua phan tu hien tai vao
+                        // Stack
+                    }
+                }
+            }
+        }
+        while (!S.isEmpty()) {
+            s1 = s1 + S.pop() + " "; // Neu Stack con phan tu thi day het vao s1
+        }
+        System.out.println("balan: " + s1);
+        return s1;
     }
 
     @Override
     public Double valueMath(String math) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        math = processInput(math);
+        math = postFix(math);
+        String[] elementMath = trimString(math);
+        Stack<Double> S = new Stack<Double>();
+        double num = 0.0;
+        double ans = 0.0;
+        System.out.println("Element math: ");
+        for (int i = 0; i < elementMath.length; i++) {
+            System.out.print(elementMath[i] + "\t");
+            if (!isOperator(elementMath[i])) {
+                S.push(stringToNumber(elementMath[i]));
+            } else { // toan tu
+                if (S.isEmpty()) {
+                    System.out.println("Stack is empty ^^ ");
+                    isError = true;
+                    return 0.0;
+                }
+                double num1 = S.pop();
+                String ei = elementMath[i];
+                if (ei.equals("~")) {
+                    num = -num1;
+                } else if (ei.equals("sin")) {
+                    if (isDegOrRad) {
+                        num1 = convertToRad(num1);
+                    }
+                    num = Math.sin(num1);
+                } else if (ei.equals("cos")) {
+                    if (isDegOrRad) {
+                        num1 = convertToRad(num1);
+                    }
+                    num = Math.cos(num1);
+                } else if (ei.equals("tan")) {
+                    if (isDegOrRad) {
+                        num1 = convertToRad(num1);
+                    }
+                    num = Math.tan(num1);
+                } else if (ei.equals("arcsin")) {
+                    num = Math.asin(num1);
+                    if (isDegOrRad) {
+                        num = convertToDeg(num);
+                    }
+                } else if (ei.equals("arccos")) {
+                    num = Math.acos(num1);
+                    if (isDegOrRad) {
+                        num = convertToDeg(num);
+                    }
+                } else if (ei.equals("arctan")) {
+                    num = Math.atan(num1);
+                    if (isDegOrRad) {
+                        num = convertToDeg(num);
+                    }
+                } else if (ei.equals("log")) {
+                    num = Math.log10(num1);
+                } else if (ei.equals("%")) {
+                    num = num1 / 100;
+                } else if (ei.equals("²")) {
+                    num = Math.pow(num1, 2);
+                } else if (ei.equals("√") || ei.equals("sqrt")) {
+                    if (num1 >= 0) {
+                        num = Math.sqrt(num1);
+                    } else {
+                        isError = true;
+                        System.out.println("Error sqrt");
+                        return 0.0;
+                    }
+                } else if (ei.equals("not") || ei.equals("¬") || ei.equals("!")) {
+                    if (isIntegerNumber(num1) && num1 >= 0) {
+                        if (ei.equals("not") || ei.equals("¬")) {
+                            num = ~(long) num1;
+                        } else if (ei.equals("!")) {
+                            num = factorial((int) num1);
+                        }
+                    }
+                } else if (!S.empty()) {
+                    double num2 = S.peek();
+
+                    if (ei.equals("→") || ei.equals("sto")) {
+                        if (indexVar(elementMath[i - 1]) >= 0) {
+                            var[indexVar(elementMath[i - 1])] = num2;
+                            ans = num2;
+                            return ans;
+                        } else {
+                            isError = true;
+                            System.out.println("Error sto");
+                            return 0.0;
+                        }
+                    } else if (ei.equals("+")) {
+                        num = num2 + num1;
+                        S.pop();
+                    } else if (ei.equals("-")) {
+                        num = num2 - num1;
+                        S.pop();
+                    } else if (ei.equals("*")) {
+                        num = num2 * num1;
+                        S.pop();
+                    } else if (ei.equals("/")) {
+                        if (num1 != 0) {
+                            num = num2 / num1;
+                        } else {
+                            isError = true;
+                            return 0.0;
+                        }
+                        S.pop();
+                    } else if (ei.equals("^")) {
+                        num = Math.pow(num2, num1);
+                        S.pop();
+                    } else if (ei.equals("ⁿ√") || ei.equals("n√")) {
+                        num = Math.pow(num1, (double) 1 / num2);
+                        S.pop();
+                    } else if (isIntegerNumber(num1) && isIntegerNumber(num2)) {
+                        if (ei.equals("ncr") || ei.equals("ℂ")) {
+                            num = combination((int) num2, (int) num1);
+                            S.pop();
+                        } else if (ei.equals("npr") || ei.equals("ℙ")) {
+                            num = permutation((int) num2, (int) num1);
+                            S.pop();
+                        } else if (ei.equals("and") || ei.equals("∧")) {
+                            num = (long) num2 & (long) num1;
+                            S.pop();
+                        } else if (ei.equals("or") || ei.equals("∨")) {
+                            num = (long) num2 | (long) num1;
+                            S.pop();
+                        } else if (ei.equals("xor") || ei.equals("⊻")) {
+                            num = (long) num2 ^ (long) num1;
+                            S.pop();
+                        } else if (ei.equals("mod")) {
+                            num = (long) num2 % (long) num1;
+                            S.pop();
+                        } else if (ei.equals("<<") || ei.equals("≪")) {
+                            num = (long) num2 << (long) num1;
+                            S.pop();
+                        } else if (ei.equals(">>") || ei.equals("≫")) {
+                            num = (int) num2 >> (int) num1;
+                            S.pop();
+                        }
+                    }
+                } else {
+                    System.out.println("Error stack empty");
+                    isError = true;
+                    return 0.0;
+                }
+                S.push(num);
+            }
+        }
+        ans = S.pop();
+        System.out.println("\nans = " + ans + "\t radix = " + radix);
+        return ans;
     }
 
     @Override
     public String primeMulti(double num) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return convertNumber.primeMulti(num);
     }
 
 }
