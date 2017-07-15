@@ -2,7 +2,7 @@
 CalculatorMT là phần mềm máy tính khoa học nguồn mở phát triển trên ngôn ngữ Java sử dụng phiên bản JDK 8.
 
 # Giấy phép
-* CalculatorMT  được phát hành theo giấy phép GNU Affero General Public License v3+.
+* CalculatorMT  được phát hành theo giấy phép MIT.
 * Xem toàn văn giấy phép trong tệp [LICENSE](LICENSE)
 
 # Kênh liên lạc
