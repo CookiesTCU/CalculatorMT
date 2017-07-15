@@ -1,14 +1,10 @@
 # Giới thiệu
 Đề tài: Phần mềm máy tính calculator
-
+Tính toán là một phânf không thể thiếu trong nghiên cứu khoa học. Khi các ngành khoa học phát triển thì nhu cầu về một công cụ đa năng có khả năng thực hiện nhiều phép toán phức tạp là vô cùng cần thiết.
 CalculatorMT là phần mềm máy tính khoa học nguồn mở phát triển trên ngôn ngữ Java sử dụng phiên bản JDK 8.
-
 ﻿Thành viên nhóm dự án:
- 
 Trần Trung Hiếu	  Trưởng nhóm|  Email: tranhieukk@gmail.com sdt: 01677136466
-
 Bùi Lý Hải Đăng
-
 Trương Hoàng Uyên
 
 
