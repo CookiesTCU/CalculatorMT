@@ -1,9 +1,14 @@
 # Giới thiệu
 Đề tài: Phần mềm máy tính calculator
+
 CalculatorMT là phần mềm máy tính khoa học nguồn mở phát triển trên ngôn ngữ Java sử dụng phiên bản JDK 8.
+
 ﻿Thành viên nhóm dự án:
+ 
 Trần Trung Hiếu	  Trưởng nhóm|  Email: tranhieukk@gmail.com sdt: 01677136466
+
 Bùi Lý Hải Đăng
+
 Trương Hoàng Uyên
 
 
