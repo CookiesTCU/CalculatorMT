@@ -1,5 +1,5 @@
 # Giới thiệu
-Đề tài: Phần mềm máy tính calculator
+Đề tài: Phần mềm máy tính calculator<br/>
 Tính toán là một phânf không thể thiếu trong nghiên cứu khoa học. Khi các ngành khoa học phát triển thì nhu cầu về một công cụ đa năng có khả năng thực hiện nhiều phép toán phức tạp là vô cùng cần thiết.
 CalculatorMT là phần mềm máy tính khoa học nguồn mở phát triển trên ngôn ngữ Java sử dụng phiên bản JDK 8.<br/>
 ﻿Thành viên nhóm dự án:<br/>
