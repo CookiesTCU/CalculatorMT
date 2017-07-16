@@ -19,6 +19,6 @@ CalculatorMT là phần mềm máy tính khoa học nguồn mở phát triển t
 * Website : http://calculatormt.96.lt
 
 # Tài liệu dự án
-* Xem tài liệu dự án trên [Wiki](https://github.com/CookiesTCU/doc/wiki)
-#Lời cảm ơn
+* Xem tài liệu dự án trên [Wiki](https://github.com/CookiesTCU/doc/wiki) <br/>
+# Lời cảm ơn
 Để hoàn thành tốt đề tài này chúng em xin cảm ơn thầy Mai Cường Thọ cùng các thầy cô bộ môn Kỹ thuật phần mềm đã hướng dẫn tạo điều kiện cho chúng em nghiên cứu và hoàn thành đề tài.Tuy nhiên,do quá trình làm còn gặp nhiều thiếu sót trong hệ thống quản lý phiên bản phân tán Github và kiến thức Java nên đồ án môn học của chúng em còn nhiều thiếu sót,rất mong sự đóng góp từ thầy và các thầy cô bộ môn để chúng em hoàn thiện đồ án một cách tốt nhất
